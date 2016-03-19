@@ -25,7 +25,7 @@ public class Textures {
     private static final int cellSize = 64;
 
     public static void load() {
-        board_sheet = new Texture(Gdx.files.internal("texture.png"));
+        board_sheet = new Texture(Gdx.files.internal("textures/board.png"));
 
         white_cell = new Sprite(board_sheet, cellSize * 0, cellSize * 0, cellSize, cellSize);
         black_cell  = new Sprite(board_sheet, cellSize * 1, cellSize * 0, cellSize, cellSize);
