@@ -11,7 +11,7 @@ import hukutoss.chess.core.Textures;
 public class Game implements ApplicationListener {
 
 	private SpriteBatch sb;
-	private OrthographicCamera camera;
+	private static OrthographicCamera camera;
 
     private GameLogic logic;
 
@@ -44,17 +44,17 @@ public class Game implements ApplicationListener {
 	}
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
     public void dispose() {
+        sb.dispose();
+    }
 
+    public static OrthographicCamera getCamera() {
+        return camera;
     }
 }

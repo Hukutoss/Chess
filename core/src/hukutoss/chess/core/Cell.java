@@ -20,6 +20,10 @@ public class Cell {
         sb.draw(type.getSprite(), x, y, type.getSprite().getWidth(), type.getSprite().getHeight());
     }
 
+    public boolean contains(float mouseX, float mouseY) {
+        return  mouseX > x && mouseX < x + type.getSprite().getWidth() &&
+                mouseY > y && mouseY < y + type.getSprite().getHeight();
+    }
 
     public enum CellType {
         BLACK(Textures.black_cell),
