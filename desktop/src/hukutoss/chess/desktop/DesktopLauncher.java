@@ -2,7 +2,7 @@ package hukutoss.chess.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import hukutoss.chess.Game;
+import hukutoss.chess.ChessGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -10,6 +10,6 @@ public class DesktopLauncher {
         config.title = "Chess";
         config.height = 512;
         config.width = 512;
-		new LwjglApplication(new Game(), config);
+		new LwjglApplication(new ChessGame(), config);
 	}
 }

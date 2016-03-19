@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import hukutoss.chess.Game;
+import hukutoss.chess.ChessGame;
 
 public class ChessBoard {
 
@@ -53,7 +53,7 @@ public class ChessBoard {
             mouse.y = Gdx.input.getY();
 
             //TODO: Need to do something with it..
-            Game.getCamera().unproject(mouse);
+            ChessGame.getCamera().unproject(mouse);
 
             this.click(mouse.x, mouse.y);
         }

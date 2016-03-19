@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import hukutoss.chess.core.GameLogic;
 import hukutoss.chess.core.Textures;
 
-public class Game implements ApplicationListener {
+public class ChessGame implements ApplicationListener {
 
 	private SpriteBatch sb;
 	private static OrthographicCamera camera;
