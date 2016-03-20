@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import hukutoss.chess.ChessGame;
-import hukutoss.chess.piece.Pawn;
 import hukutoss.chess.piece.Piece;
-import hukutoss.chess.util.TileType;
+import hukutoss.chess.util.EnumPiece;
 import hukutoss.chess.util.Side;
+import hukutoss.chess.util.TileType;
 
 public class ChessBoard {
 
@@ -25,16 +28,78 @@ public class ChessBoard {
         mouse = new Vector3();
 
         //x - letter, y - number
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
+        for (int x = 0; x < SIZE; x++)
+            for (int y = 0; y < SIZE; y++)
+            {
                 grid[x][y] = new Tile(
                         x * CELL_SIZE,
                         y * CELL_SIZE,
                         x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0 ? TileType.BLACK : TileType.WHITE);
             }
-        }
 
-        grid[0][0].setPiece_data(new Pawn(grid[0][0].getX(), grid[0][0].getY(), Side.BLACK));
+        initGame();
+    }
+
+    // lower case - white
+    // upper case - black
+    // "rnbqkbnr/pppppppp/8/8/8/8//PPPPPPPP/RNBQKBNR
+    public static final String START_POS = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+
+    private void initGame()
+    {
+        String[] tmp = START_POS.split("/");
+
+        for (int i = 0; i < tmp.length; i++)
+            for (int j = 0; j < tmp[i].length(); j++)
+            {
+                char t = tmp[i].substring(j, j + 1).charAt(0);
+                Side color = Character.isLowerCase(t) ? Side.WHITE : t == '8' ? null : Side.BLACK;
+                EnumPiece piece;
+                switch (tmp[i].substring(j, j + 1).charAt(0))
+                {
+                    case 'r':
+                    case 'R':
+                        piece = EnumPiece.Rook;
+                        break;
+                    case 'n':
+                    case 'N':
+                        piece = EnumPiece.Knight;
+                        break;
+                    case 'b':
+                    case 'B':
+                        piece = EnumPiece.Bishop;
+                        break;
+                    case 'q':
+                    case 'Q':
+                        piece = EnumPiece.Queen;
+                        break;
+                    case 'k':
+                    case 'K':
+                        piece = EnumPiece.King;
+                        break;
+                    case 'p':
+                    case 'P':
+                        piece = EnumPiece.Pawn;
+                        break;
+                    default:
+                        piece = null;
+                }
+                createPiece(color, piece, j, i);
+            }
+    }
+
+    //TODO: Rewrite this shit ( ^◡^)っ✂╰⋃╯
+    private void createPiece(Side color, EnumPiece type, int x, int y) {
+        if (type != null && color != null) {
+            try {
+                Tile tile = grid[x][y];
+                Constructor[] cons = ClassReflection
+                        .getConstructors(ClassReflection.forName("hukutoss.chess.piece." + type.name()));
+                tile.setPiece_data((Piece) cons[0].newInstance(tile.getX(), tile.getY(), color));
+            } catch (ReflectionException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void render(SpriteBatch sb)
@@ -82,13 +147,16 @@ public class ChessBoard {
             startX = mouse.x;
             startY = mouse.y;
         }
-        if(Gdx.input.isTouched()) {
+        if(Gdx.input.isTouched())
+        {
             mouse.x = Gdx.input.getX();
             mouse.y = Gdx.input.getY();
 
             ChessGame.getCamera().unproject(mouse);
 
-            if (mouse.x > startX + dist || mouse.x < startX - dist || mouse.y > startY + dist || mouse.y < startY - dist) {
+            if (    mouse.x > startX + dist || mouse.x < startX - dist ||
+                    mouse.y > startY + dist || mouse.y < startY - dist)
+            {
                 int pad = 4;
                 if (mouse.x < 0)
                     mouse.x = pad;
@@ -101,32 +169,33 @@ public class ChessBoard {
 
                 dragAndDrop(mouse.x, mouse.y, false);
             }
-        } else {
+        }
+        else
+        {
             dragAndDrop(mouse.x, mouse.y, true);
         }
     }
 
-    private void dragAndDrop(float mouseX, float mouseY, boolean drop) {
+    private void dragAndDrop(float mouseX, float mouseY, boolean drop)
+    {
         if (temp_piece == null) {
             return;
         }
 
         temp_piece.setPos(mouseX - 24, mouseY - 24);
 
-        if(drop) {
+        if(drop)
+        {
             for (int x = 0; x < SIZE; x++)
-                for (int y = 0; y < SIZE; y++) {
-                    if (grid[x][y].contains(mouseX, mouseY)) {
+                for (int y = 0; y < SIZE; y++)
+                {
+                    if (grid[x][y].contains(mouseX, mouseY))
+                    {
                         Tile tile = grid[x][y];
-                        if (tile.isEmpty()) {
+                        if (tile.isEmpty())
+                        {
                             tile.setPiece_data(temp_piece);
-
-                            temp_piece.setPiecePos(tile.getX(), tile.getY());
-                            temp_piece = null;
-
-                            temp_cell.setSelected(false);
-                            temp_cell.setPiece_data(null);
-                            temp_cell = null;
+                            resetTemp(tile);
                         }
                         else
                         {
@@ -156,14 +225,19 @@ public class ChessBoard {
                     {
                         tile.setPiece_data(temp_piece);
 
-                        temp_piece.setPiecePos(tile.getX(), tile.getY());
-                        temp_piece = null;
-
-                        temp_cell.setPiece_data(null);
-                        temp_cell.setSelected(false);
-                        temp_cell = null;
+                        resetTemp(tile);
                     }
                 }
         }
+    }
+
+    private void resetTemp(Tile tile)
+    {
+        temp_piece.setPiecePos(tile.getX(), tile.getY());
+        temp_piece = null;
+
+        temp_cell.setSelected(false);
+        temp_cell.setPiece_data(null);
+        temp_cell = null;
     }
 }
