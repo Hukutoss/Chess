@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import hukutoss.chess.ChessGame;
+import hukutoss.chess.piece.Piece;
 
 public class ChessBoard {
 
@@ -29,6 +30,10 @@ public class ChessBoard {
                         x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0 ? Cell.CellType.BLACK : Cell.CellType.WHITE);
             }
         }
+
+        grid[0][0].setPiece_data(new Piece(grid[0][0].getX(), grid[0][0].getY()));
+
+
     }
 
     public void render(SpriteBatch sb) {
@@ -38,6 +43,8 @@ public class ChessBoard {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 grid[x][y].render(sb);
+                if(grid[x][y].getPiece_data() != null)
+                    grid[x][y].getPiece_data().render(sb);
             }
         }
     }
@@ -59,11 +66,28 @@ public class ChessBoard {
         }
     }
 
+    private Piece temp_piece;
+    private Cell temp_cell;
+
     private void click(float mouseX, float mouseY) {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 if(grid[x][y].contains(mouseX, mouseY)) {
-                    System.out.println("CELL: " + x + ", " + y);
+                    Cell tile = grid[x][y];
+                    if(tile.getPiece_data() != null) {
+                        if (temp_piece == null) {
+                            temp_piece = grid[x][y].getPiece_data();
+                            temp_cell = tile;
+                        }
+                    }
+                    else {
+                        if(tile.getPiece_data() == null) {
+                            tile.setPiece_data(temp_piece);
+                            tile.getPiece_data().setPiecePos(tile.getX(), tile.getY());
+                            temp_piece = null;
+                            temp_cell = null;
+                        }
+                    }
                 }
             }
         }

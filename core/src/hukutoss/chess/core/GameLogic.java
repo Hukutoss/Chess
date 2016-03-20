@@ -1,5 +1,7 @@
 package hukutoss.chess.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameLogic {
@@ -11,6 +13,14 @@ public class GameLogic {
     }
 
     public void render(SpriteBatch sb) {
+        debug();
         board.render(sb);
+    }
+
+    public void debug() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            board = new ChessBoard();
+            System.out.println("NEW GAME");
+        }
     }
 }
