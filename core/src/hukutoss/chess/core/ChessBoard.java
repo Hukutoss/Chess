@@ -34,7 +34,7 @@ public class ChessBoard {
                 grid[x][y] = new Tile(
                         x * CELL_SIZE,
                         y * CELL_SIZE,
-                        x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0 ? TileType.BLACK : TileType.WHITE);
+                        x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0 ? TileType.WHITE : TileType.BLACK);
             }
 
         initGame();
