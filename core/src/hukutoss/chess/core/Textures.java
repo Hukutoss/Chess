@@ -6,17 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Textures {
 
-    public static Textures instance;
-
-    public static Textures getInstance() {
-        if (instance == null) {
-            instance = new Textures();
-        }
-        return instance;
-    }
-
-    private Textures() {}
-
     private static Texture texture;
 
     public static Sprite white_cell;
