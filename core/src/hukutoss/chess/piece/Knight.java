@@ -5,9 +5,10 @@ import hukutoss.chess.util.Side;
 
 public class Knight extends Piece {
 
-    public Knight(float x, float y, Side side) {
+    public Knight(float x, float y, Side side)
+    {
+        this.side = side;
         this.sprite = side == Side.WHITE ? Textures.white_knight : Textures.black_knight;
-
         this.setPiecePos(x, y);
     }
 }

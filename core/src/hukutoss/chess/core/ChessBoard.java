@@ -176,15 +176,15 @@ public class ChessBoard {
         }
     }
 
-    private void dragAndDrop(float mouseX, float mouseY, boolean drop)
+    private void dragAndDrop(float mouseX, float mouseY, boolean isDropping)
     {
-        if (temp_piece == null) {
+        if (temp_piece == null && temp_cell == null) {
             return;
         }
 
         temp_piece.setPos(mouseX - 24, mouseY - 24);
 
-        if(drop)
+        if(isDropping)
         {
             for (int x = 0; x < SIZE; x++)
                 for (int y = 0; y < SIZE; y++)
@@ -199,7 +199,15 @@ public class ChessBoard {
                         }
                         else
                         {
-                            temp_piece.setPiecePos(temp_cell.getX(), temp_cell.getY());
+                            if(!tile.getPiece_data().getSide().equals(temp_piece.getSide()))
+                            {
+                                tile.setPiece_data(temp_piece);
+                                resetTemp(tile);
+                            }
+                            else
+                            {
+                                temp_piece.setPiecePos(temp_cell.getX(), temp_cell.getY());
+                            }
                         }
                     }
                 }
@@ -216,16 +224,35 @@ public class ChessBoard {
                     Tile tile = grid[x][y];
                     if(temp_piece == null && !tile.isEmpty())
                     {
-                        tile.setSelected(true);
-
                         temp_piece = tile.getPiece_data();
-                        temp_cell = tile;
-                    }
-                    else if(temp_piece != null && tile.isEmpty())
-                    {
-                        tile.setPiece_data(temp_piece);
 
-                        resetTemp(tile);
+                        temp_cell = tile;
+                        temp_cell.setSelected(true);
+                    }
+                    else if(temp_piece != null)
+                    {
+                        if (tile.isEmpty())
+                        {
+                            tile.setPiece_data(temp_piece);
+                            resetTemp(tile);
+                        }
+                        else
+                        {
+                            if (!tile.getPiece_data().getSide().equals(temp_piece.getSide()))
+                            {
+                                tile.setPiece_data(temp_piece);
+                                resetTemp(tile);
+                            }
+                            else
+                            {
+                                temp_cell.setSelected(false);
+
+                                temp_piece = tile.getPiece_data();
+
+                                temp_cell = tile;
+                                temp_cell.setSelected(true);
+                            }
+                        }
                     }
                 }
         }

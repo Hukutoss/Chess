@@ -35,8 +35,8 @@ public class Tile {
     }
 
     public boolean contains(float mouseX, float mouseY) {
-        return mouseX > x && mouseX < x + type.getSprite().getWidth() &&
-                mouseY > y && mouseY < y + type.getSprite().getHeight();
+        return mouseX > x && mouseX < x + 1 + type.getSprite().getWidth() &&
+                mouseY > y && mouseY < y + 1 + type.getSprite().getHeight();
     }
 
     public boolean isEmpty() {
