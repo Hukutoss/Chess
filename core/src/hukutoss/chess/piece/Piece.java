@@ -3,6 +3,7 @@ package hukutoss.chess.piece;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import hukutoss.chess.util.Position;
 import hukutoss.chess.util.Side;
 
 public abstract class Piece {
@@ -14,23 +15,28 @@ public abstract class Piece {
     protected float x;
     protected float y;
 
-    public void setPiecePos(float x, float y)
+    protected Position pos;
+
+    public void setPiecePos(Position pos)
     {
-        this.x = x + sprite.getWidth() / 6;
-        this.y = y + sprite.getHeight() / 6;
+        this.pos = new Position(pos);
     }
 
-    public void setPos(float x, float y)
+    public void dragging(float x, float y)
     {
-        this.x = x;
-        this.y = y;
+        this.pos.setX(x / pos.TILE_SIZE);
+        this.pos.setY(y / pos.TILE_SIZE);
     }
 
     public void render(SpriteBatch sb)
     {
-        sb.setColor(Color.WHITE);
-        if(sprite != null) {
-            sb.draw(sprite, x, y);
+        if(sprite != null)
+        {
+            float xOffset = sprite.getWidth() / 6;
+            float yOffset = sprite.getHeight() / 6;
+
+            sb.setColor(Color.WHITE);
+            sb.draw(sprite, pos.getFloatX() + xOffset, pos.getFloatY() + yOffset);
         }
     }
 

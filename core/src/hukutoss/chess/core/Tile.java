@@ -3,25 +3,23 @@ package hukutoss.chess.core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import hukutoss.chess.piece.Piece;
+import hukutoss.chess.util.Position;
 import hukutoss.chess.util.TileType;
 
 public class Tile {
-
-    private float x;
-    private float y;
 
     private TileType type;
 
     private Piece piece_data;
 
+    private Position pos;
+
     private boolean selected;
 
-    public Tile(float x, float y, TileType type) {
-        this.x = x;
-        this.y = y;
+    public Tile(Position pos, TileType type)
+    {
+        this.pos = pos;
         this.type = type;
-
-        this.piece_data = null;
     }
 
     public void render(SpriteBatch sb)
@@ -31,12 +29,13 @@ public class Tile {
         {
             sb.setColor(Color.LIME);
         }
-        sb.draw(type.getSprite(), x, y, type.getSprite().getWidth(), type.getSprite().getHeight());
+        sb.draw(type.getSprite(), pos.getFloatX(), pos.getFloatY(), type.getSprite().getWidth(), type.getSprite().getHeight());
     }
 
-    public boolean contains(float mouseX, float mouseY) {
-        return mouseX > x && mouseX < x + 1 + type.getSprite().getWidth() &&
-                mouseY > y && mouseY < y + 1 + type.getSprite().getHeight();
+    public boolean contains(float mouseX, float mouseY)
+    {
+        return mouseX > this.pos.getFloatX() && mouseX < this.pos.getFloatX() + 1 + type.getSprite().getWidth() &&
+                mouseY > this.pos.getFloatY() && mouseY < this.pos.getFloatY() + 1 + type.getSprite().getHeight();
     }
 
     public boolean isEmpty() {
@@ -51,15 +50,11 @@ public class Tile {
         this.piece_data = piece_data;
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public Position getPos() {
+        return pos;
     }
 }

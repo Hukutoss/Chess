@@ -52,6 +52,7 @@ public class ChessGame implements ApplicationListener {
     @Override
     public void dispose() {
         sb.dispose();
+        Textures.dispose();
     }
 
     public static OrthographicCamera getCamera() {

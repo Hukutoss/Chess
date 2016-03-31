@@ -10,30 +10,28 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import hukutoss.chess.ChessGame;
 import hukutoss.chess.piece.Piece;
 import hukutoss.chess.util.EnumPiece;
+import hukutoss.chess.util.Position;
 import hukutoss.chess.util.Side;
 import hukutoss.chess.util.TileType;
 
 public class ChessBoard {
 
-    private static final int SIZE = 8;
-    private static final int CELL_SIZE = 64;
+    private static final int BOARD_SIZE = 8;
 
     private Tile[][] grid;
 
     private Vector3 mouse;
 
     public ChessBoard() {
-        grid = new Tile[SIZE][SIZE];
+        grid = new Tile[BOARD_SIZE][BOARD_SIZE];
 
         mouse = new Vector3();
 
         //x - letter, y - number
-        for (int x = 0; x < SIZE; x++)
-            for (int y = 0; y < SIZE; y++)
+        for (int x = 0; x < BOARD_SIZE; x++)
+            for (int y = 0; y < BOARD_SIZE; y++)
             {
-                grid[x][y] = new Tile(
-                        x * CELL_SIZE,
-                        y * CELL_SIZE,
+                grid[x][y] = new Tile(new Position(x, y),
                         x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0 ? TileType.WHITE : TileType.BLACK);
             }
 
@@ -49,13 +47,13 @@ public class ChessBoard {
     {
         String[] tmp = START_POS.split("/");
 
-        for (int i = 0; i < tmp.length; i++)
-            for (int j = 0; j < tmp[i].length(); j++)
+        for (int y = 0; y < tmp.length; y++)
+            for (int x = 0; x < tmp[y].length(); x++)
             {
-                char t = tmp[i].substring(j, j + 1).charAt(0);
+                char t = tmp[y].substring(x, x + 1).charAt(0);
                 Side color = Character.isLowerCase(t) ? Side.WHITE : t == '8' ? null : Side.BLACK;
                 EnumPiece piece;
-                switch (tmp[i].substring(j, j + 1).charAt(0))
+                switch (tmp[y].substring(x, x + 1).charAt(0))
                 {
                     case 'r':
                     case 'R':
@@ -84,7 +82,7 @@ public class ChessBoard {
                     default:
                         piece = null;
                 }
-                createPiece(color, piece, j, i);
+                createPiece(color, piece, x, y);
             }
     }
 
@@ -92,10 +90,9 @@ public class ChessBoard {
     private void createPiece(Side color, EnumPiece type, int x, int y) {
         if (type != null && color != null) {
             try {
-                Tile tile = grid[x][y];
                 Constructor[] cons = ClassReflection
                         .getConstructors(ClassReflection.forName("hukutoss.chess.piece." + type.name()));
-                tile.setPiece_data((Piece) cons[0].newInstance(tile.getX(), tile.getY(), color));
+                grid[x][y].setPiece_data((Piece) cons[0].newInstance(new Position(x, y), color));
             } catch (ReflectionException e) {
                 e.printStackTrace();
             }
@@ -107,8 +104,8 @@ public class ChessBoard {
         update();
 
         sb.setColor(Color.WHITE);
-        for (int x = 0; x < SIZE; x++)
-            for (int y = 0; y < SIZE; y++)
+        for (int x = 0; x < BOARD_SIZE; x++)
+            for (int y = 0; y < BOARD_SIZE; y++)
             {
                 grid[x][y].render(sb);
                 if(grid[x][y].getPiece_data() != null) {
@@ -182,12 +179,13 @@ public class ChessBoard {
             return;
         }
 
-        temp_piece.setPos(mouseX - 24, mouseY - 24);
+        float mOffset = 28;
+        temp_piece.dragging(mouseX - mOffset, mouseY - mOffset);
 
         if(isDropping)
         {
-            for (int x = 0; x < SIZE; x++)
-                for (int y = 0; y < SIZE; y++)
+            for (int x = 0; x < BOARD_SIZE; x++)
+                for (int y = 0; y < BOARD_SIZE; y++)
                 {
                     if (grid[x][y].contains(mouseX, mouseY))
                     {
@@ -206,7 +204,7 @@ public class ChessBoard {
                             }
                             else
                             {
-                                temp_piece.setPiecePos(temp_cell.getX(), temp_cell.getY());
+                                temp_piece.setPiecePos(temp_cell.getPos());
                             }
                         }
                     }
@@ -216,8 +214,8 @@ public class ChessBoard {
 
     private void click(float mouseX, float mouseY)
     {
-        for (int x = 0; x < SIZE; x++)
-            for (int y = 0; y < SIZE; y++)
+        for (int x = 0; x < BOARD_SIZE; x++)
+            for (int y = 0; y < BOARD_SIZE; y++)
             {
                 if(grid[x][y].contains(mouseX, mouseY))
                 {
@@ -260,11 +258,14 @@ public class ChessBoard {
 
     private void resetTemp(Tile tile)
     {
-        temp_piece.setPiecePos(tile.getX(), tile.getY());
-        temp_piece = null;
+        if(temp_piece != null && temp_cell != null)
+        {
+            temp_piece.setPiecePos(tile.getPos());
+            temp_piece = null;
 
-        temp_cell.setSelected(false);
-        temp_cell.setPiece_data(null);
-        temp_cell = null;
+            temp_cell.setSelected(false);
+            temp_cell.setPiece_data(null);
+            temp_cell = null;
+        }
     }
 }

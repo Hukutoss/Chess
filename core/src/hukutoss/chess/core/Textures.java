@@ -50,4 +50,8 @@ public class Textures {
         black_rook = new Sprite(texture, pieceSize * 4, pieceSize * 1, pieceSize, pieceSize);
         black_pawn = new Sprite(texture, pieceSize * 5, pieceSize * 1, pieceSize, pieceSize);
     }
+
+    public static void dispose() {
+        texture.dispose();
+    }
 }
