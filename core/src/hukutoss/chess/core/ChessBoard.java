@@ -198,7 +198,7 @@ public class ChessBoard {
 
     private void dragAndDrop(float mouseX, float mouseY, boolean isDropping)
     {
-        if (temp_piece == null && temp_tile == null) {
+        if (temp_piece == null) {
             return;
         }
 
@@ -229,7 +229,6 @@ public class ChessBoard {
                     if(temp_piece == null && !tile.isEmpty())
                     {
                         temp_piece = tile.getPiece_data();
-                        temp_piece.legalMoves();
                         legalMoves = temp_piece.getMoves();
 
                         temp_tile = tile;
@@ -260,20 +259,30 @@ public class ChessBoard {
                     temp_piece.setPiecePos(temp_tile.getPos());
                 }
             }
-            if (temp_piece != null && temp_tile != null)
-            {
-                temp_tile.setSelected(false);
-                temp_tile = null;
-                temp_piece = null;
-            }
+            temp_tile.setSelected(false);
+            temp_tile = null;
+            temp_piece = null;
         }
         else
         {
             boolean sameSide = tile.getPiece_data().getSide().equals(temp_piece.getSide());
+
             if(!sameSide)
             {
-                tile.setPiece_data(temp_piece);
-                resetTemp(tile);
+                for (Position p : legalMoves)
+                {
+                    if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY())
+                    {
+                        tile.setPiece_data(temp_piece);
+                        resetTemp(tile);
+                        return;
+                    }
+                    else
+                    {
+                        temp_tile.setPiece_data(temp_piece);
+                        temp_piece.setPiecePos(temp_tile.getPos());
+                    }
+                }
             }
             else
             {
@@ -281,12 +290,11 @@ public class ChessBoard {
                 {
                     temp_piece.setPiecePos(temp_tile.getPos());
                 }
-                else if(!isDrag)
+                else
                 {
                     temp_tile.setSelected(false);
 
                     temp_piece = tile.getPiece_data();
-                    temp_piece.legalMoves();
                     legalMoves = temp_piece.getMoves();
 
                     temp_tile = tile;

@@ -49,6 +49,7 @@ public abstract class Piece {
     public abstract void legalMoves();
 
     public List<Position> getMoves() {
+        this.legalMoves();
         return moves;
     }
 
