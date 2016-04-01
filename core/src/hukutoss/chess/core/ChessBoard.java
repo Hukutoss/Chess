@@ -102,6 +102,12 @@ public class ChessBoard {
         }
     }
 
+    private Tile getTile(Position pos) {
+        if(pos.getX() > -1 && pos.getX() < BOARD_SIZE && pos.getY() > -1 && pos.getY() < BOARD_SIZE)
+            return grid[pos.getX()][pos.getY()];
+        return null;
+    }
+
     public void render(SpriteBatch sb, ShapeRenderer sr)
     {
         update();
@@ -111,22 +117,24 @@ public class ChessBoard {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
                 grid[x][y].render(sb);
-                if(grid[x][y].getPiece_data() != null) {
+                if(grid[x][y].getPiece_data() != null)
+                {
                     grid[x][y].getPiece_data().render(sb);
                 }
-                if(temp_piece != null) {
-                    for(Position p : legalMoves)
-                    {
-                        Tile tile = grid[p.getX()][p.getY()];
-                        if(tile.isEmpty())
-                        {
-                            tile.renderMoves(sb, sr);
-                        }
-                    }
+            }
 
-                    temp_piece.render(sb);
+        if(temp_piece != null && legalMoves != null)
+        {
+            for(Position p : legalMoves)
+            {
+                Tile tile = getTile(p);
+                if(tile != null && tile.isEmpty())
+                {
+                    tile.renderMoves(sb, sr);
                 }
             }
+            temp_piece.render(sb);
+        }
     }
 
     private void update() {
@@ -135,10 +143,9 @@ public class ChessBoard {
 
     private float startX;
     private float startY;
-    private float dist = 12;
 
     private Piece temp_piece;
-    private Tile temp_cell;
+    private Tile temp_tile;
 
     private List<Position> legalMoves;
 
@@ -162,6 +169,8 @@ public class ChessBoard {
         {
             mouse.x = Gdx.input.getX();
             mouse.y = Gdx.input.getY();
+
+            float dist = 12;
 
             ChessGame.getCamera().unproject(mouse);
 
@@ -189,12 +198,11 @@ public class ChessBoard {
 
     private void dragAndDrop(float mouseX, float mouseY, boolean isDropping)
     {
-        if (temp_piece == null && temp_cell == null) {
+        if (temp_piece == null && temp_tile == null) {
             return;
         }
 
-        float mOffset = 28;
-        temp_piece.dragging(mouseX - mOffset, mouseY - mOffset);
+        temp_piece.dragging(mouseX, mouseY);
 
         if(isDropping)
         {
@@ -204,23 +212,7 @@ public class ChessBoard {
                     if (grid[x][y].contains(mouseX, mouseY))
                     {
                         Tile tile = grid[x][y];
-                        if (tile.isEmpty())
-                        {
-                            tile.setPiece_data(temp_piece);
-                            resetTemp(tile);
-                        }
-                        else
-                        {
-                            if(!tile.getPiece_data().getSide().equals(temp_piece.getSide()))
-                            {
-                                tile.setPiece_data(temp_piece);
-                                resetTemp(tile);
-                            }
-                            else
-                            {
-                                temp_piece.setPiecePos(temp_cell.getPos());
-                            }
-                        }
+                        dropPiece(tile, true);
                     }
                 }
         }
@@ -240,50 +232,80 @@ public class ChessBoard {
                         temp_piece.legalMoves();
                         legalMoves = temp_piece.getMoves();
 
-                        temp_cell = tile;
-                        temp_cell.setSelected(true);
+                        temp_tile = tile;
+                        temp_tile.setSelected(true);
                     }
                     else if(temp_piece != null)
                     {
-                        if (tile.isEmpty())
-                        {
-                            tile.setPiece_data(temp_piece);
-                            resetTemp(tile);
-                        }
-                        else
-                        {
-                            if (!tile.getPiece_data().getSide().equals(temp_piece.getSide()))
-                            {
-                                tile.setPiece_data(temp_piece);
-                                resetTemp(tile);
-                            }
-                            else
-                            {
-                                temp_cell.setSelected(false);
-
-                                temp_piece = tile.getPiece_data();
-                                temp_piece.legalMoves();
-                                legalMoves = temp_piece.getMoves();
-
-                                temp_cell = tile;
-                                temp_cell.setSelected(true);
-                            }
-                        }
+                        dropPiece(tile, false);
                     }
                 }
         }
     }
 
+    private void dropPiece(Tile tile, boolean isDrag) {
+        if (tile.isEmpty())
+        {
+            for (Position p : legalMoves)
+            {
+                if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY())
+                {
+                    tile.setPiece_data(temp_piece);
+                    resetTemp(tile);
+                    return;
+                }
+                else
+                {
+                    temp_tile.setPiece_data(temp_piece);
+                    temp_piece.setPiecePos(temp_tile.getPos());
+                }
+            }
+            if (temp_piece != null && temp_tile != null)
+            {
+                temp_tile.setSelected(false);
+                temp_tile = null;
+                temp_piece = null;
+            }
+        }
+        else
+        {
+            boolean sameSide = tile.getPiece_data().getSide().equals(temp_piece.getSide());
+            if(!sameSide)
+            {
+                tile.setPiece_data(temp_piece);
+                resetTemp(tile);
+            }
+            else
+            {
+                if(isDrag)
+                {
+                    temp_piece.setPiecePos(temp_tile.getPos());
+                }
+                else if(!isDrag)
+                {
+                    temp_tile.setSelected(false);
+
+                    temp_piece = tile.getPiece_data();
+                    temp_piece.legalMoves();
+                    legalMoves = temp_piece.getMoves();
+
+                    temp_tile = tile;
+                    temp_tile.setSelected(true);
+                }
+            }
+        }
+    }
+
     private void resetTemp(Tile tile)
     {
-        if(temp_piece != null && temp_cell != null)
+        if(temp_piece != null && temp_tile != null)
         {
             temp_piece.setPiecePos(tile.getPos());
             temp_piece = null;
 
-            temp_cell.setSelected(false);
-            temp_cell.setPiece_data(null);
-            temp_cell = null;
+            temp_tile.setSelected(false);
+            temp_tile.setPiece_data(null);
+            temp_tile = null;
         }
     }
 }

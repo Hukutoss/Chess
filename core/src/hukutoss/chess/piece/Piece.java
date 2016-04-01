@@ -29,8 +29,9 @@ public abstract class Piece {
 
     public void dragging(float x, float y)
     {
-        this.pos.setX(x / pos.TILE_SIZE);
-        this.pos.setY(y / pos.TILE_SIZE);
+        float offset = 32;
+        this.pos.setX((x - offset) / pos.TILE_SIZE);
+        this.pos.setY((y - offset) / pos.TILE_SIZE);
     }
 
     public void render(SpriteBatch sb)

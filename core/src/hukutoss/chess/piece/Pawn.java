@@ -17,17 +17,27 @@ public class Pawn extends Piece {
     public void legalMoves()
     {
         moves.clear();
-        Position mPos = new Position(pos.getX(), pos.getY() + 1);
-        moves.add(mPos);
-
-        if(isFirstMove())
+        Position mPos;
+        if (side == Side.WHITE)
         {
-            mPos = new Position(pos.getX(), pos.getY() + 2);
+            mPos = new Position(pos.getX(), pos.getY() + 1);
             moves.add(mPos);
-        }
-    }
 
-    public boolean isFirstMove() {
-        return this.pos.getY() == 1;
+            if (this.pos.getY() == 1)
+            {
+                mPos = new Position(pos.getX(), pos.getY() + 2);
+                moves.add(mPos);
+            }
+        } else if (side == Side.BLACK)
+        {
+            mPos = new Position(pos.getX(), pos.getY() - 1);
+            moves.add(mPos);
+
+            if (this.pos.getY() == 6)
+            {
+                mPos = new Position(pos.getX(), pos.getY() - 2);
+                moves.add(mPos);
+            }
+        }
     }
 }
