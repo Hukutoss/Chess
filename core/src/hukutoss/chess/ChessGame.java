@@ -5,12 +5,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.core.GameLogic;
 import hukutoss.chess.core.Textures;
 
 public class ChessGame implements ApplicationListener {
 
 	private SpriteBatch sb;
+    private ShapeRenderer sr;
+
 	private static OrthographicCamera camera;
 
     private GameLogic logic;
@@ -20,6 +23,7 @@ public class ChessGame implements ApplicationListener {
         Textures.load();
 
 		sb = new SpriteBatch();
+        sr = new ShapeRenderer();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
@@ -39,7 +43,7 @@ public class ChessGame implements ApplicationListener {
 
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
-        logic.render(sb);
+        logic.render(sb, sr);
         sb.end();
 	}
 
@@ -52,6 +56,7 @@ public class ChessGame implements ApplicationListener {
     @Override
     public void dispose() {
         sb.dispose();
+        sr.dispose();
         Textures.dispose();
     }
 

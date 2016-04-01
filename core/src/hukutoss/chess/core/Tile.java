@@ -2,6 +2,7 @@ package hukutoss.chess.core;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.piece.Piece;
 import hukutoss.chess.util.Position;
 import hukutoss.chess.util.TileType;
@@ -30,6 +31,17 @@ public class Tile {
             sb.setColor(Color.LIME);
         }
         sb.draw(type.getSprite(), pos.getFloatX(), pos.getFloatY(), type.getSprite().getWidth(), type.getSprite().getHeight());
+    }
+
+    public void renderMoves(SpriteBatch sb, ShapeRenderer sr) {
+        sb.end();
+
+        sr.setColor(new Color(0.0f, 1.0f, 0.0f, 0.7f));
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.circle(pos.getFloatX() + (type.getSprite().getWidth() / 2), pos.getFloatY() + (type.getSprite().getHeight() / 2), 12);
+        sr.end();
+
+        sb.begin();
     }
 
     public boolean contains(float mouseX, float mouseY)

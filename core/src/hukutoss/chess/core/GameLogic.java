@@ -3,6 +3,7 @@ package hukutoss.chess.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class GameLogic {
 
@@ -12,9 +13,9 @@ public class GameLogic {
         board = new ChessBoard();
     }
 
-    public void render(SpriteBatch sb) {
+    public void render(SpriteBatch sb, ShapeRenderer sr) {
         debug();
-        board.render(sb);
+        board.render(sb, sr);
     }
 
     public void debug() {

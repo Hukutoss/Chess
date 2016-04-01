@@ -12,4 +12,10 @@ public class Rook extends Piece {
         this.sprite = side == Side.WHITE ? Textures.white_rook: Textures.black_rook;
         this.pos = pos;
     }
+
+    @Override
+    public void legalMoves()
+    {
+
+    }
 }

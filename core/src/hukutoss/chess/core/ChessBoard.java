@@ -3,6 +3,7 @@ package hukutoss.chess.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Constructor;
@@ -13,6 +14,8 @@ import hukutoss.chess.util.EnumPiece;
 import hukutoss.chess.util.Position;
 import hukutoss.chess.util.Side;
 import hukutoss.chess.util.TileType;
+
+import java.util.List;
 
 public class ChessBoard {
 
@@ -99,7 +102,7 @@ public class ChessBoard {
         }
     }
 
-    public void render(SpriteBatch sb)
+    public void render(SpriteBatch sb, ShapeRenderer sr)
     {
         update();
 
@@ -112,6 +115,15 @@ public class ChessBoard {
                     grid[x][y].getPiece_data().render(sb);
                 }
                 if(temp_piece != null) {
+                    for(Position p : legalMoves)
+                    {
+                        Tile tile = grid[p.getX()][p.getY()];
+                        if(tile.isEmpty())
+                        {
+                            tile.renderMoves(sb, sr);
+                        }
+                    }
+
                     temp_piece.render(sb);
                 }
             }
@@ -127,6 +139,8 @@ public class ChessBoard {
 
     private Piece temp_piece;
     private Tile temp_cell;
+
+    private List<Position> legalMoves;
 
     //TODO: Move to the player (when he will be exist)
     private void inputHandler()
@@ -223,6 +237,8 @@ public class ChessBoard {
                     if(temp_piece == null && !tile.isEmpty())
                     {
                         temp_piece = tile.getPiece_data();
+                        temp_piece.legalMoves();
+                        legalMoves = temp_piece.getMoves();
 
                         temp_cell = tile;
                         temp_cell.setSelected(true);
@@ -246,6 +262,8 @@ public class ChessBoard {
                                 temp_cell.setSelected(false);
 
                                 temp_piece = tile.getPiece_data();
+                                temp_piece.legalMoves();
+                                legalMoves = temp_piece.getMoves();
 
                                 temp_cell = tile;
                                 temp_cell.setSelected(true);

@@ -12,4 +12,10 @@ public class Knight extends Piece {
         this.sprite = side == Side.WHITE ? Textures.white_knight : Textures.black_knight;
         this.pos = pos;
     }
+
+    @Override
+    public void legalMoves()
+    {
+
+    }
 }

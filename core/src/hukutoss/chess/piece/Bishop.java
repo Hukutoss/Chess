@@ -12,4 +12,9 @@ public class Bishop extends Piece {
         this.sprite = side == Side.WHITE ? Textures.white_bishop : Textures.black_bishop;
         this.pos = pos;
     }
+
+    @Override
+    public void legalMoves() {
+
+    }
 }

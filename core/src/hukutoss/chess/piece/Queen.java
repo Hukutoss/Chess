@@ -12,4 +12,10 @@ public class Queen extends Piece {
         this.sprite = side == Side.WHITE ? Textures.white_queen : Textures.black_queen;
         this.pos = pos;
     }
+
+    @Override
+    public void legalMoves()
+    {
+
+    }
 }

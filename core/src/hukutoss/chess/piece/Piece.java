@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import hukutoss.chess.util.Position;
 import hukutoss.chess.util.Side;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Piece {
 
     protected Sprite sprite;
@@ -16,6 +19,8 @@ public abstract class Piece {
     protected float y;
 
     protected Position pos;
+
+    protected List<Position> moves = new ArrayList<Position>();
 
     public void setPiecePos(Position pos)
     {
@@ -38,6 +43,12 @@ public abstract class Piece {
             sb.setColor(Color.WHITE);
             sb.draw(sprite, pos.getFloatX() + xOffset, pos.getFloatY() + yOffset);
         }
+    }
+
+    public abstract void legalMoves();
+
+    public List<Position> getMoves() {
+        return moves;
     }
 
     public Side getSide()
