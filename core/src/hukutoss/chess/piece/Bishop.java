@@ -15,6 +15,19 @@ public class Bishop extends Piece {
 
     @Override
     public void legalMoves() {
+        moves.clear();
+        Position mPos;
 
+        for (int i = 1; i < 8; i++)
+        {
+            mPos = new Position(pos.getX() + i, pos.getY() + i);
+            moves.add(mPos);
+            mPos = new Position(pos.getX() - i, pos.getY() - i);
+            moves.add(mPos);
+            mPos = new Position(pos.getX() + i, pos.getY() - i);
+            moves.add(mPos);
+            mPos = new Position(pos.getX() - i, pos.getY() + i);
+            moves.add(mPos);
+        }
     }
 }

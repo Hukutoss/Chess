@@ -16,6 +16,16 @@ public class King extends Piece {
     @Override
     public void legalMoves()
     {
+        moves.clear();
+        Position mPos;
 
+        mPos = new Position(pos.getX() + 1, pos.getY());
+        moves.add(mPos);
+        mPos = new Position(pos.getX() - 1, pos.getY());
+        moves.add(mPos);
+        mPos = new Position(pos.getX(), pos.getY() + 1);
+        moves.add(mPos);
+        mPos = new Position(pos.getX(), pos.getY() - 1);
+        moves.add(mPos);
     }
 }

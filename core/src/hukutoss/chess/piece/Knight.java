@@ -16,6 +16,24 @@ public class Knight extends Piece {
     @Override
     public void legalMoves()
     {
+        moves.clear();
+        Position mPos;
 
+        mPos = new Position(pos.getX() + 1, pos.getY() + 2);
+        moves.add(mPos);
+        mPos = new Position(pos.getX() - 1, pos.getY() + 2);
+        moves.add(mPos);
+        mPos = new Position(pos.getX() + 1, pos.getY() - 2);
+        moves.add(mPos);
+        mPos = new Position(pos.getX() - 1, pos.getY() - 2);
+        moves.add(mPos);
+        mPos = new Position(pos.getX() + 2, pos.getY() + 1);
+        moves.add(mPos);
+        mPos = new Position(pos.getX() + 2, pos.getY() - 1);
+        moves.add(mPos);
+        mPos = new Position(pos.getX() - 2, pos.getY() + 1);
+        moves.add(mPos);
+        mPos = new Position(pos.getX() - 2, pos.getY() - 1);
+        moves.add(mPos);
     }
 }
