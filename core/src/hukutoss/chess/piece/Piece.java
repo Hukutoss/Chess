@@ -15,9 +15,6 @@ public abstract class Piece {
 
     protected Side side;
 
-    protected float x;
-    protected float y;
-
     protected Position pos;
 
     protected List<Position> moves = new ArrayList<Position>();
