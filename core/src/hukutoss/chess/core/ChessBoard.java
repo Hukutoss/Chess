@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.reflect.Constructor;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import hukutoss.chess.ChessGame;
 import hukutoss.chess.piece.Piece;
-import hukutoss.chess.util.EnumPiece;
+import hukutoss.chess.util.PieceType;
 import hukutoss.chess.util.Position;
 import hukutoss.chess.util.Side;
 import hukutoss.chess.util.TileType;
@@ -55,32 +55,32 @@ public class ChessBoard {
             {
                 char t = tmp[y].substring(x, x + 1).charAt(0);
                 Side color = Character.isLowerCase(t) ? Side.WHITE : t == '8' ? null : Side.BLACK;
-                EnumPiece piece;
+                PieceType piece;
                 switch (tmp[y].substring(x, x + 1).charAt(0))
                 {
                     case 'r':
                     case 'R':
-                        piece = EnumPiece.Rook;
+                        piece = PieceType.Rook;
                         break;
                     case 'n':
                     case 'N':
-                        piece = EnumPiece.Knight;
+                        piece = PieceType.Knight;
                         break;
                     case 'b':
                     case 'B':
-                        piece = EnumPiece.Bishop;
+                        piece = PieceType.Bishop;
                         break;
                     case 'q':
                     case 'Q':
-                        piece = EnumPiece.Queen;
+                        piece = PieceType.Queen;
                         break;
                     case 'k':
                     case 'K':
-                        piece = EnumPiece.King;
+                        piece = PieceType.King;
                         break;
                     case 'p':
                     case 'P':
-                        piece = EnumPiece.Pawn;
+                        piece = PieceType.Pawn;
                         break;
                     default:
                         piece = null;
@@ -90,7 +90,7 @@ public class ChessBoard {
     }
 
     //TODO: Rewrite this shit ( ^◡^)っ✂╰⋃╯
-    private void createPiece(Side color, EnumPiece type, int x, int y) {
+    private void createPiece(Side color, PieceType type, int x, int y) {
         if (type != null && color != null) {
             try {
                 Constructor[] cons = ClassReflection
