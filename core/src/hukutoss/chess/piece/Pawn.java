@@ -1,6 +1,7 @@
 package hukutoss.chess.piece;
 
 import hukutoss.chess.core.Textures;
+import hukutoss.chess.util.PieceType;
 import hukutoss.chess.util.Position;
 import hukutoss.chess.util.Side;
 
@@ -11,6 +12,7 @@ public class Pawn extends Piece {
         this.side = side;
         this.sprite = side == Side.WHITE ? Textures.white_pawn : Textures.black_pawn;
         this.pos = pos;
+        this.type = PieceType.Pawn;
     }
 
     @Override
