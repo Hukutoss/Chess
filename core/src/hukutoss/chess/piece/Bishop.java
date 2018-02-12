@@ -9,10 +9,8 @@ public class Bishop extends Piece {
 
     public Bishop(Position pos, Side side)
     {
-        this.side = side;
+        super(pos, side);
         this.sprite = side == Side.WHITE ? Textures.white_bishop : Textures.black_bishop;
-        this.pos = pos;
-        this.type = PieceType.Bishop;
     }
 
     @Override

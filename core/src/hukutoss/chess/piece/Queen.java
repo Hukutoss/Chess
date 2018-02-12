@@ -9,10 +9,8 @@ public class Queen extends Piece {
 
     public Queen(Position pos, Side side)
     {
-        this.side = side;
+        super(pos, side);
         this.sprite = side == Side.WHITE ? Textures.white_queen : Textures.black_queen;
-        this.pos = pos;
-        this.type = PieceType.Queen;
     }
 
     @Override

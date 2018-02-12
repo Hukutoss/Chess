@@ -3,6 +3,7 @@ package hukutoss.chess.piece;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import hukutoss.chess.core.Textures;
 import hukutoss.chess.util.PieceType;
 import hukutoss.chess.util.Position;
 import hukutoss.chess.util.Side;
@@ -17,6 +18,11 @@ public abstract class Piece {
     protected Position pos;
     protected List<Position> moves = new ArrayList<Position>();
     protected PieceType type;
+
+    public Piece(Position pos, Side side) {
+        this.side = side;
+        this.pos = pos;
+    }
 
     public void setPiecePos(Position pos)
     {

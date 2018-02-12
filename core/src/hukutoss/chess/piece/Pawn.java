@@ -9,10 +9,8 @@ public class Pawn extends Piece {
 
     public Pawn(Position pos, Side side)
     {
-        this.side = side;
+        super(pos, side);
         this.sprite = side == Side.WHITE ? Textures.white_pawn : Textures.black_pawn;
-        this.pos = pos;
-        this.type = PieceType.Pawn;
     }
 
     @Override

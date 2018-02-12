@@ -9,10 +9,8 @@ public class King extends Piece {
 
     public King(Position pos, Side side)
     {
-        this.side = side;
+        super(pos, side);
         this.sprite = side == Side.WHITE ? Textures.white_king : Textures.black_king;
-        this.pos = pos;
-        this.type = PieceType.Bishop;
     }
 
     @Override
