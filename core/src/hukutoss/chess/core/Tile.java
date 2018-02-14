@@ -1,72 +1,70 @@
 package hukutoss.chess.core;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.piece.Piece;
-import hukutoss.chess.util.Position;
-import hukutoss.chess.util.TileType;
+import hukutoss.chess.util.Pos;
 
 public class Tile {
 
-    private TileType type;
+    public static final int TILE_SIZE = 64;
 
-    private Piece piece_data;
-
-    private Position pos;
+    private Piece piece;
+    private Pos pos;
+    private Sprite sprite;
 
     private boolean selected;
 
-    public Tile(Position pos, TileType type)
-    {
-        this.pos = pos;
-        this.type = type;
+    public Tile(int x, int y, Sprite sprite) {
+        this.pos = new Pos(x, y);
+        this.sprite = sprite;
     }
 
-    public void render(SpriteBatch sb)
-    {
+    public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
-        if(selected)
-        {
+        if (selected) {
             sb.setColor(Color.LIME);
         }
-        sb.draw(type.getSprite(), pos.getFloatX(), pos.getFloatY(), type.getSprite().getWidth(), type.getSprite().getHeight());
+        sb.draw(this.sprite, pos.getX() * TILE_SIZE, pos.getY() * TILE_SIZE, this.sprite.getWidth(), this.sprite.getHeight());
     }
 
-    public void renderMoves(SpriteBatch sb, ShapeRenderer sr) {
-        sb.end();
+//    public void renderMoves(SpriteBatch sb, ShapeRenderer sr) {
+//        sb.end();
+//
+//        sr.setColor(new Color(0.0f, 1.0f, 0.0f, 0.7f));
+//        sr.begin(ShapeRenderer.ShapeType.Filled);
+//        sr.circle(pos.getX() + (this.sprite.getWidth() / 2), pos.getY() + (this.sprite.getHeight() / 2), 12);
+//        sr.end();
+//
+//        sb.begin();
+//    }
 
-        sr.setColor(new Color(0.0f, 1.0f, 0.0f, 0.7f));
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.circle(pos.getFloatX() + (type.getSprite().getWidth() / 2), pos.getFloatY() + (type.getSprite().getHeight() / 2), 12);
-        sr.end();
-
-        sb.begin();
-    }
-
-    public boolean contains(float mouseX, float mouseY)
-    {
-        return mouseX > this.pos.getFloatX() && mouseX < this.pos.getFloatX() + 1 + type.getSprite().getWidth() &&
-                mouseY > this.pos.getFloatY() && mouseY < this.pos.getFloatY() + 1 + type.getSprite().getHeight();
+    public boolean mouseContains(float mouseX, float mouseY) {
+        float x = this.pos.getX() * TILE_SIZE;
+        float y = this.pos.getY() * TILE_SIZE;
+        return mouseX > x && mouseX < x + 1 + this.sprite.getWidth() &&
+                mouseY > y && mouseY < y + 1 + this.sprite.getHeight(); // why +1 tho?
     }
 
     public boolean isEmpty() {
-        return this.piece_data == null;
+        return this.piece == null;
     }
 
-    public Piece getPiece_data() {
-        return piece_data;
+    public Piece getPiece() {
+        return piece;
     }
 
-    public void setPiece_data(Piece piece_data) {
-        this.piece_data = piece_data;
+    public void setPiece(Piece piece) {
+        this.piece = piece;
     }
 
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
-    public Position getPos() {
+    public Pos getPos() {
         return pos;
     }
 }
