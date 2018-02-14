@@ -1,15 +1,16 @@
 package hukutoss.chess.core;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
-import hukutoss.chess.ChessGame;
 import hukutoss.chess.piece.*;
 import hukutoss.chess.util.Pos;
 import hukutoss.chess.util.Side;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChessBoard {
 
@@ -65,22 +66,32 @@ public class ChessBoard {
     String secondfen = "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 0 1";
 
     private void initGame() {
-        String fen = secondfen.trim();
+
+        String fen = DEFAULT_FEN.trim();
         String[] fenParts = fen.split(" ");
         if (fenParts.length != 6) {
             System.out.format("FEN is invalid %s must have 6 sections", fen); //TODO: @Cleanup Make a LOG
             return;
         }
         //Board setup
-        String[] rankStrs = fenParts[0].split("/");
-        if (rankStrs.length != 8) {
-            System.out.format("FEN has an invalid board %s", rankStrs); //TODO: @Cleanup Make a LOG
+        String[] rankStr = fenParts[0].split("/");
+        if (rankStr.length != 8) {
+            System.out.format("FEN has an invalid board %s", rankStr); //TODO: @Cleanup Make a LOG
             return;
         }
-        for (int y = 0; y < rankStrs.length; y++) {
+
+        Map<Character, Class<?>> pieces = new HashMap<>();
+        pieces.put('P', Pawn.class);
+        pieces.put('N', Knight.class);
+        pieces.put('B', Bishop.class);
+        pieces.put('R', Rook.class);
+        pieces.put('Q', Queen.class);
+        pieces.put('K', King.class);
+
+        for (int y = 0; y < rankStr.length; y++) {
             int x = 0;
-            for (int r = 0; r < rankStrs[y].length(); r++) {
-                char t = rankStrs[y].charAt(r);
+            for (int r = 0; r < rankStr[y].length(); r++) {
+                char t = rankStr[y].charAt(r);
 //                System.out.format("There is %s at [%s][%s]  \n", Character.toUpperCase(t) , r, y);
                 if (!Character.isLetter(t)) {
                     x += Character.getNumericValue(t);
@@ -91,13 +102,20 @@ public class ChessBoard {
                 Side side = Character.isLowerCase(t) ? Side.WHITE : Side.BLACK;
                 t = Character.toUpperCase(t);
                 System.out.format(">>> %s %s piece added at [%s][%s]\n", side.name(), t, x, y);
+                //TODO: Need to refactor this piece of code. It works but looks awful for me.
+                Piece p = null;
+                try {
+                    p = (Piece) pieces.get(t).getConstructor(Pos.class, Side.class).newInstance(new Pos(x, y), side);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                getGrid()[x][y].setPiece(p);
                 x++;
-                //TODO: Implement pieces into the game
+
             }
             System.out.println("=====");
         }
-
-        grid[4][4].setPiece(new Queen(new Pos(4, 4), Side.WHITE)); //TODO: @Temporary
 
         //TODO: Add color, castling, en passant and clocks
     }
