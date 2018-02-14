@@ -13,16 +13,12 @@ import hukutoss.chess.util.Side;
 
 public class ChessBoard {
 
-    private static final int BOARD_SIZE = 8;
+    public static final int BOARD_SIZE = 8;
 
     private Tile[][] grid;
 
-    private Vector3 mouse; //TODO: Should go in some sort of logic system.
-
     public ChessBoard() {
         grid = new Tile[BOARD_SIZE][BOARD_SIZE];
-
-        mouse = new Vector3();
 
         //x - letter, y - number
         for (int x = 0; x < BOARD_SIZE; x++)
@@ -107,167 +103,18 @@ public class ChessBoard {
     }
 
     public void render(SpriteBatch sb, ShapeRenderer sr) {
-        update();
-
         sb.setColor(Color.WHITE);
-        for (int x = 0; x < BOARD_SIZE; x++)
+        for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
                 grid[x][y].render(sb);
                 if (grid[x][y].getPiece() != null) {
                     grid[x][y].getPiece().render(sb);
                 }
             }
-
-//        if (temp_piece != null && legalMoves != null) {
-//            for (Pos p : legalMoves) {
-//                Tile tile = getTile(p);
-//                if (tile != null && tile.isEmpty()) {
-//                    tile.renderMoves(sb, sr);
-//                }
-//            }
-//            temp_piece.render(sb);
-//        }
-    }
-
-    private void update() {
-        inputHandler();
-    }
-
-    private float startX;
-    private float startY;
-
-    private Piece temp_piece;
-    private Tile temp_tile;
-
-//    private List<Pos> legalMoves;
-
-    //TODO: Move to the player (when he will be exist)
-    private void inputHandler() {
-        if (Gdx.input.justTouched()) {
-            mouse.x = Gdx.input.getX();
-            mouse.y = Gdx.input.getY();
-            ChessGame.getCamera().unproject(mouse);
-
-            this.click(mouse.x, mouse.y);
-
-            startX = mouse.x;
-            startY = mouse.y;
-        }
-        if (Gdx.input.isTouched()) {
-            mouse.x = Gdx.input.getX();
-            mouse.y = Gdx.input.getY();
-            ChessGame.getCamera().unproject(mouse);
-
-            float dist = 12;
-
-            if (mouse.x > startX + dist || mouse.x < startX - dist ||
-                    mouse.y > startY + dist || mouse.y < startY - dist) {
-                int pad = 4;
-                if (mouse.x < 0)
-                    mouse.x = pad;
-                if (mouse.y < 0)
-                    mouse.y = pad;
-                if (mouse.x > Gdx.graphics.getWidth())
-                    mouse.x = Gdx.graphics.getWidth() - pad;
-                if (mouse.y > Gdx.graphics.getHeight())
-                    mouse.y = Gdx.graphics.getHeight() - pad;
-
-                dragAndDrop(mouse.x, mouse.y, false);
-            }
-        } else {
-            dragAndDrop(mouse.x, mouse.y, true);
         }
     }
 
-    private void dragAndDrop(float mouseX, float mouseY, boolean isDropping) {
-        if (temp_piece == null) {
-            return;
-        }
-
-        temp_piece.dndMove(mouseX, mouseY);
-
-        if (isDropping) {
-            for (int x = 0; x < BOARD_SIZE; x++)
-                for (int y = 0; y < BOARD_SIZE; y++) {
-                    if (grid[x][y].mouseContains(mouseX, mouseY)) {
-                        Tile tile = grid[x][y];
-                        dropPiece(tile, true);
-                    }
-                }
-        }
-    }
-
-    private void click(float mouseX, float mouseY) {
-        for (int x = 0; x < BOARD_SIZE; x++)
-            for (int y = 0; y < BOARD_SIZE; y++) {
-                if (grid[x][y].mouseContains(mouseX, mouseY)) {
-                    Tile tile = grid[x][y];
-                    if (temp_piece == null && !tile.isEmpty()) {
-                        temp_piece = tile.getPiece();
-//                        legalMoves = temp_piece.getMoves();
-
-                        temp_tile = tile;
-                        temp_tile.setSelected(true);
-                    } else if (temp_piece != null) {
-                        dropPiece(tile, false);
-                    }
-                }
-            }
-    }
-
-    private void dropPiece(Tile tile, boolean isDrag) {
-        if (tile.isEmpty()) {
-//            for (Pos p : legalMoves) {
-//                if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY()) {
-//                    tile.setPiece(temp_piece);
-//                    resetTemp(tile);
-//                    return;
-//                } else {
-//                    temp_tile.setPiece(temp_piece);
-//                    temp_piece.setPiecePos(temp_tile.getPos());
-//                }
-//            }
-            temp_tile.setSelected(false);
-            temp_tile = null;
-            temp_piece = null;
-        } else {
-//            boolean sameSide = tile.getPiece().getSide().equals(temp_piece.getSide());
-
-//            if (!sameSide) {
-//                for (Pos p : legalMoves) {
-//                    if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY()) {
-//                        tile.setPiece(temp_piece);
-//                        resetTemp(tile);
-//                        return;
-//                    } else {
-//                        temp_tile.setPiece(temp_piece);
-//                        temp_piece.setPiecePos(temp_tile.getPos());
-//                    }
-//                }
-//            } else {
-//                if (isDrag) {
-//                    temp_piece.setPiecePos(temp_tile.getPos());
-//                } else {
-//                    temp_tile.setSelected(false);
-//
-//                    temp_piece = tile.getPiece();
-//                    legalMoves = temp_piece.getMoves();
-//
-//                    temp_tile = tile;
-//                    temp_tile.setSelected(true);
-//                }
-//            }
-        }
-    }
-
-    private void resetTemp(Tile tile) {
-        if (temp_piece != null && temp_tile != null) {
-            temp_piece.setPos(tile.getPos());
-            temp_piece = null;
-
-            temp_tile.setSelected(false);
-            temp_tile.setPiece(null);
-            temp_tile = null;
-        }
+    public Tile[][] getGrid() {
+        return grid;
     }
 }
