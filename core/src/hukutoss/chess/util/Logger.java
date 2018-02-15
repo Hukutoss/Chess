@@ -40,6 +40,13 @@ public class Logger {
         }
     }
 
+    public void debug(String format, Object... args) {
+        if (this.logLevel >= Logger.DEBUG) {
+            int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+            System.out.printf("%s:%s > %s %n", tag, Integer.toString(lineNumber), String.format(format, args));
+        }
+    }
+
     public void error(String message) {
         if (this.logLevel >= Logger.ERROR) {
             int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
@@ -55,6 +62,13 @@ public class Logger {
         }
     }
 
+    public void error(String format, Object... args) {
+        if (this.logLevel >= Logger.ERROR) {
+            int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+            System.out.printf("%s:%s > %s %n", tag, Integer.toString(lineNumber), String.format(format, args));
+        }
+    }
+
     public void info(String message) {
         if (this.logLevel >= Logger.INFO) {
             int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
@@ -67,6 +81,13 @@ public class Logger {
             int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
             System.out.printf("%s:%s > %s %n", tag, Integer.toString(lineNumber), message);
             exception.printStackTrace(System.out);
+        }
+    }
+
+    public void info(String format, Object... args) {
+        if (this.logLevel >= Logger.INFO) {
+            int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+            System.out.printf("%s:%s > %s %n", tag, Integer.toString(lineNumber), String.format(format, args));
         }
     }
 
@@ -97,6 +118,20 @@ public class Logger {
             int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
             System.out.printf("%s:%s > %s %n", tag, Integer.toString(lineNumber), message);
             exception.printStackTrace(System.out);
+        }
+    }
+
+    public void log(String format, Object... args) {
+        if (this.logLevel >= Logger.NONE) {
+            int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+            System.out.printf("%s:%s > %s %n", tag, Integer.toString(lineNumber), String.format(format, args));
+        }
+    }
+
+    public void log(int level, String format, Object... args) {
+        if (this.logLevel >= level) {
+            int lineNumber = Thread.currentThread().getStackTrace()[2].getLineNumber();
+            System.out.printf("%s:%s > %s %n", tag, Integer.toString(lineNumber), String.format(format, args));
         }
     }
 }
