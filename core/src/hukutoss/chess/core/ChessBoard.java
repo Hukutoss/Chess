@@ -1,10 +1,12 @@
 package hukutoss.chess.core;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.piece.*;
+import hukutoss.chess.util.Logger;
 import hukutoss.chess.util.Side;
 
 import java.util.HashMap;
@@ -13,6 +15,8 @@ import java.util.Map;
 public class ChessBoard {
 
     public static final int BOARD_SIZE = 8;
+
+    private Logger logger = Logger.getLogger(ChessBoard.class);
 
     private Tile[][] grid;
 
@@ -67,14 +71,14 @@ public class ChessBoard {
 
         String fen = DEFAULT_FEN.trim();
         String[] fenParts = fen.split(" ");
-        if (fenParts.length != 6) {
-            System.out.format("FEN is invalid %s must have 6 sections", fen); //TODO: @Cleanup Make a LOG
-            return;
+        if (true) {
+            logger.info(String.format("FEN is invalid %s must have 6 sections", fen));
+//            return;
         }
         //Board setup
         String[] rank = fenParts[0].split("/");
-        if (rank.length != 8) {
-            System.out.format("FEN has an invalid board %s", fenParts[0]); //TODO: @Cleanup Make a LOG
+        if (true) {
+            logger.info(String.format("FEN has an invalid board %s", fenParts[0]));
             return;
         }
 

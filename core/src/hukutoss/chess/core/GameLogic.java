@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import hukutoss.chess.ChessGame;
 import hukutoss.chess.piece.Piece;
+import hukutoss.chess.util.Logger;
 
 public class GameLogic {
+
+    private Logger logger = Logger.getLogger(GameLogic.class);
 
     private ChessBoard board;
     private Vector3 mouse;
@@ -29,7 +32,8 @@ public class GameLogic {
     public void debug() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             board = new ChessBoard();
-            System.out.println("NEW GAME");
+            logger.info("New Game");
+
         }
     }
 
