@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.piece.*;
-import hukutoss.chess.util.Pos;
 import hukutoss.chess.util.Side;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,9 +72,9 @@ public class ChessBoard {
             return;
         }
         //Board setup
-        String[] rankStr = fenParts[0].split("/");
-        if (rankStr.length != 8) {
-            System.out.format("FEN has an invalid board %s", rankStr); //TODO: @Cleanup Make a LOG
+        String[] rank = fenParts[0].split("/");
+        if (rank.length != 8) {
+            System.out.format("FEN has an invalid board %s", fenParts[0]); //TODO: @Cleanup Make a LOG
             return;
         }
 
@@ -88,35 +86,27 @@ public class ChessBoard {
         pieces.put('Q', Queen.class);
         pieces.put('K', King.class);
 
-        for (int y = 0; y < rankStr.length; y++) {
+        for (int y = 0; y < rank.length; y++) {
             int x = 0;
-            for (int r = 0; r < rankStr[y].length(); r++) {
-                char t = rankStr[y].charAt(r);
-//                System.out.format("There is %s at [%s][%s]  \n", Character.toUpperCase(t) , r, y);
+            for (int r = 0; r < rank[y].length(); r++) {
+                char t = rank[y].charAt(r);
                 if (!Character.isLetter(t)) {
                     x += Character.getNumericValue(t);
-//                    System.out.format("> x is %s. Added %s\n", x, t);
                     continue;
                 }
 
-                Side side = Character.isLowerCase(t) ? Side.WHITE : Side.BLACK;
-                t = Character.toUpperCase(t);
-                System.out.format(">>> %s %s piece added at [%s][%s]\n", side.name(), t, x, y);
-                //TODO: Need to refactor this piece of code. It works but looks awful for me.
-                Piece p = null;
                 try {
-                    p = (Piece) pieces.get(t).getConstructor(Pos.class, Side.class).newInstance(new Pos(x, y), side);
+                    Side side = Character.isLowerCase(t) ? Side.WHITE : Side.BLACK;
+                    t = Character.toUpperCase(t);
+                    Piece p = (Piece) pieces.get(t).getConstructor(Side.class).newInstance(side);
+                    getGrid()[x][y].addPiece(p);
+//                  System.out.format(">>> %s %s piece added at [%s][%s]\n", side.name(), t, x, y);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                getGrid()[x][y].setPiece(p);
                 x++;
-
             }
-            System.out.println("=====");
         }
-
         //TODO: Add color, castling, en passant and clocks
     }
 

@@ -13,17 +13,8 @@ public abstract class Piece {
     protected Side side;
     protected Pos pos;
 
-    public Piece(float x, float y, Side side) {
-        this(new Pos(x, y), side);
-    }
-
-    public Piece(Tile tile, Side side) {
-        this(tile.getPos(), side);
-    }
-
-    public Piece(Pos pos, Side side) {
+    public Piece(Side side) {
         this.side = side;
-        this.pos = pos;
     }
 
     public void setPos(float x, float y) {
@@ -32,7 +23,7 @@ public abstract class Piece {
     }
 
     public void setPos(Pos pos) {
-        this.pos = pos;
+        this.pos = new Pos(pos);
     }
 
     public void dndMove(float x, float y) {

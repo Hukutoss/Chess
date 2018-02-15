@@ -6,8 +6,8 @@ import hukutoss.chess.util.Side;
 
 public class Pawn extends Piece {
 
-    public Pawn(Pos pos, Side side) {
-        super(pos, side);
+    public Pawn(Side side) {
+        super(side);
         this.sprite = side == Side.WHITE ? Textures.white_pawn : Textures.black_pawn;
     }
 

@@ -6,8 +6,8 @@ import hukutoss.chess.util.Side;
 
 public class Rook extends Piece {
 
-    public Rook(Pos pos, Side side) {
-        super(pos, side);
+    public Rook(Side side) {
+        super(side);
         this.sprite = side == Side.WHITE ? Textures.white_rook : Textures.black_rook;
     }
 

@@ -6,8 +6,8 @@ import hukutoss.chess.util.Side;
 
 public class Bishop extends Piece {
 
-    public Bishop(Pos pos, Side side) {
-        super(pos, side);
+    public Bishop(Side side) {
+        super(side);
         this.sprite = side == Side.WHITE ? Textures.white_bishop : Textures.black_bishop;
     }
 

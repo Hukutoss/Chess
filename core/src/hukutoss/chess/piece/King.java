@@ -6,8 +6,8 @@ import hukutoss.chess.util.Side;
 
 public class King extends Piece {
 
-    public King(Pos pos, Side side) {
-        super(pos, side);
+    public King(Side side) {
+        super(side);
         this.sprite = side == Side.WHITE ? Textures.white_king : Textures.black_king;
     }
 

@@ -27,7 +27,7 @@ public class GameLogic {
     }
 
     public void debug() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             board = new ChessBoard();
             System.out.println("NEW GAME");
         }
@@ -116,11 +116,11 @@ public class GameLogic {
         if (tile.isEmpty()) {
 //            for (Pos p : legalMoves) {
 //                if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY()) {
-//                    tile.setPiece(temp_piece);
+//                    tile.addPiece(temp_piece);
 //                    resetTemp(tile);
 //                    return;
 //                } else {
-//                    temp_tile.setPiece(temp_piece);
+//                    temp_tile.addPiece(temp_piece);
 //                    temp_piece.setPiecePos(temp_tile.getPos());
 //                }
 //            }
@@ -133,11 +133,11 @@ public class GameLogic {
 //            if (!sameSide) {
 //                for (Pos p : legalMoves) {
 //                    if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY()) {
-//                        tile.setPiece(temp_piece);
+//                        tile.addPiece(temp_piece);
 //                        resetTemp(tile);
 //                        return;
 //                    } else {
-//                        temp_tile.setPiece(temp_piece);
+//                        temp_tile.addPiece(temp_piece);
 //                        temp_piece.setPiecePos(temp_tile.getPos());
 //                    }
 //                }
@@ -163,7 +163,7 @@ public class GameLogic {
             temp_piece = null;
 
             temp_tile.setSelected(false);
-            temp_tile.setPiece(null);
+            temp_tile.addPiece(null);
             temp_tile = null;
         }
     }

@@ -48,16 +48,17 @@ public class Tile {
                 mouseY > y && mouseY < y + 1 + this.sprite.getHeight(); // why +1 tho?
     }
 
-    public boolean isEmpty() {
-        return this.piece == null;
+    public void addPiece(Piece piece) {
+        this.piece = piece;
+        this.piece.setPos(this.pos);
     }
 
     public Piece getPiece() {
         return piece;
     }
 
-    public void setPiece(Piece piece) {
-        this.piece = piece;
+    public boolean isEmpty() {
+        return this.piece == null;
     }
 
     public void setSelected(boolean selected) {

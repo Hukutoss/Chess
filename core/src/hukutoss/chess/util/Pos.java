@@ -12,6 +12,11 @@ public class Pos {
         this.y = y;
     }
 
+    public Pos(Pos pos) {
+        this.x = pos.getX();
+        this.y = pos.getY();
+    }
+
     public float getX() {
         return x;
     }
