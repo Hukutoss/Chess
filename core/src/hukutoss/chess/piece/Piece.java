@@ -26,11 +26,6 @@ public abstract class Piece {
         this.pos = new Pos(pos);
     }
 
-    public void dndMove(float x, float y) {
-        float offset = 32;
-        this.setPos((x - offset) / Tile.TILE_SIZE, (y - offset) / Tile.TILE_SIZE);
-    }
-
     public void render(SpriteBatch sb) {
         if (sprite != null) {
             float xOffset = sprite.getWidth() / 6;

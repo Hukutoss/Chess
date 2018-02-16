@@ -37,11 +37,8 @@ public class GameLogic {
         }
     }
 
-    private float startX;
-    private float startY;
-
-    private Piece temp_piece;
-    private Tile temp_tile;
+    Piece t_piece;
+    Tile t_tile;
 
     private void inputHandler() {
         if (Gdx.input.justTouched()) {
@@ -49,126 +46,58 @@ public class GameLogic {
             mouse.y = Gdx.input.getY();
             ChessGame.getCamera().unproject(mouse);
 
-            this.click(mouse.x, mouse.y);
-
-            startX = mouse.x;
-            startY = mouse.y;
-        }
-        if (Gdx.input.isTouched()) {
-            mouse.x = Gdx.input.getX();
-            mouse.y = Gdx.input.getY();
-            ChessGame.getCamera().unproject(mouse);
-
-            float dist = 12;
-
-            if (mouse.x > startX + dist || mouse.x < startX - dist ||
-                    mouse.y > startY + dist || mouse.y < startY - dist) {
-                int pad = 4;
-                if (mouse.x < 0)
-                    mouse.x = pad;
-                if (mouse.y < 0)
-                    mouse.y = pad;
-                if (mouse.x > Gdx.graphics.getWidth())
-                    mouse.x = Gdx.graphics.getWidth() - pad;
-                if (mouse.y > Gdx.graphics.getHeight())
-                    mouse.y = Gdx.graphics.getHeight() - pad;
-
-                dragAndDrop(mouse.x, mouse.y, false);
-            }
-        } else {
-            dragAndDrop(mouse.x, mouse.y, true);
-        }
-    }
-
-    private void dragAndDrop(float mouseX, float mouseY, boolean isDropping) {
-        if (temp_piece == null) {
-            return;
-        }
-
-        temp_piece.dndMove(mouseX, mouseY);
-
-        if (isDropping) {
-            for (int x = 0; x < ChessBoard.BOARD_SIZE; x++)
+//            this.click(mouse.x, mouse.y);
+            for (int x = 0; x < ChessBoard.BOARD_SIZE; x++) {
                 for (int y = 0; y < ChessBoard.BOARD_SIZE; y++) {
-                    if (board.getGrid()[x][y].mouseContains(mouseX, mouseY)) {
+                    if (board.getGrid()[x][y].mouseContains(mouse.x, mouse.y)) {
                         Tile tile = board.getGrid()[x][y];
-                        dropPiece(tile, true);
-                    }
-                }
-        }
-    }
 
-    private void click(float mouseX, float mouseY) {
-        for (int x = 0; x < ChessBoard.BOARD_SIZE; x++)
-            for (int y = 0; y < ChessBoard.BOARD_SIZE; y++) {
-                if (board.getGrid()[x][y].mouseContains(mouseX, mouseY)) {
-                    Tile tile = board.getGrid()[x][y];
-                    if (temp_piece == null && !tile.isEmpty()) {
-                        temp_piece = tile.getPiece();
-//                        legalMoves = temp_piece.getMoves();
-
-                        temp_tile = tile;
-                        temp_tile.setSelected(true);
-                    } else if (temp_piece != null) {
-                        dropPiece(tile, false);
+                        if (!tile.isEmpty()) {
+                            if (t_piece == null) {
+                                t_piece = tile.getPiece();
+                                tile.setSelected(true);
+                                t_tile = tile;
+                                break;
+                            }
+                        } else {
+                            if (t_piece != null) {
+                                tile.addPiece(t_piece);
+                                t_tile.removePiece();
+                                t_tile.setSelected(false);
+                                t_piece = null;
+                                t_tile = null;
+                                break;
+                            }
+                        }
                     }
                 }
             }
-    }
-
-    private void dropPiece(Tile tile, boolean isDrag) {
-        if (tile.isEmpty()) {
-//            for (Pos p : legalMoves) {
-//                if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY()) {
-//                    tile.addPiece(temp_piece);
-//                    resetTemp(tile);
-//                    return;
-//                } else {
-//                    temp_tile.addPiece(temp_piece);
-//                    temp_piece.setPiecePos(temp_tile.getPos());
-//                }
-//            }
-            temp_tile.setSelected(false);
-            temp_tile = null;
-            temp_piece = null;
-        } else {
-//            boolean sameSide = tile.getPiece().getSide().equals(temp_piece.getSide());
-
-//            if (!sameSide) {
-//                for (Pos p : legalMoves) {
-//                    if (tile.getPos().getX() == p.getX() && tile.getPos().getY() == p.getY()) {
-//                        tile.addPiece(temp_piece);
-//                        resetTemp(tile);
-//                        return;
-//                    } else {
-//                        temp_tile.addPiece(temp_piece);
-//                        temp_piece.setPiecePos(temp_tile.getPos());
-//                    }
-//                }
-//            } else {
-//                if (isDrag) {
-//                    temp_piece.setPiecePos(temp_tile.getPos());
-//                } else {
-//                    temp_tile.setSelected(false);
-//
-//                    temp_piece = tile.getPiece();
-//                    legalMoves = temp_piece.getMoves();
-//
-//                    temp_tile = tile;
-//                    temp_tile.setSelected(true);
-//                }
-//            }
-        }
-    }
-
-    private void resetTemp(Tile tile) {
-        if (temp_piece != null && temp_tile != null) {
-            temp_piece.setPos(tile.getPos());
-            temp_piece = null;
-
-            temp_tile.setSelected(false);
-            temp_tile.addPiece(null);
-            temp_tile = null;
         }
     }
 }
+//        if (Gdx.input.isTouched()) {
+//            mouse.x = Gdx.input.getX();
+//            mouse.y = Gdx.input.getY();
+//            ChessGame.getCamera().unproject(mouse);
+//
+//            float dist = 12;
+//
+//            if (mouse.x > startX + dist || mouse.x < startX - dist ||
+//                    mouse.y > startY + dist || mouse.y < startY - dist) {
+//                int pad = 4;
+//                if (mouse.x < 0)
+//                    mouse.x = pad;
+//                if (mouse.y < 0)
+//                    mouse.y = pad;
+//                if (mouse.x > Gdx.graphics.getWidth())
+//                    mouse.x = Gdx.graphics.getWidth() - pad;
+//                if (mouse.y > Gdx.graphics.getHeight())
+//                    mouse.y = Gdx.graphics.getHeight() - pad;
+//
+//                dragAndDrop(mouse.x, mouse.y, false);
+//            }
+//        } else {
+//            dragAndDrop(mouse.x, mouse.y, true);
+//        }
+
+

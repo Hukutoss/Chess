@@ -65,20 +65,20 @@ public class ChessBoard {
     // 6. Fullmove number. The number of the full move. It start at 1, and is incremented after Black's move.
 
     private static final String DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    String secondfen = "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 0 1";
+    private static final String SECOND_FEN = "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 0 1";
 
     private void initGame() {
 
         String fen = DEFAULT_FEN.trim();
         String[] fenParts = fen.split(" ");
-        if (true) {
-            logger.info(String.format("FEN is invalid %s must have 6 sections", fen));
-//            return;
+        if (fenParts.length != 6) {
+            logger.info("FEN is invalid %s must have 6 sections", fen);
+            return;
         }
         //Board setup
         String[] rank = fenParts[0].split("/");
-        if (true) {
-            logger.info(String.format("FEN has an invalid board %s", fenParts[0]));
+        if (rank.length != 8) {
+            logger.info("FEN has an invalid board %s", fenParts[0]);
             return;
         }
 

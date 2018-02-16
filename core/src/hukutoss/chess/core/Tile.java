@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.piece.Piece;
+import hukutoss.chess.util.Logger;
 import hukutoss.chess.util.Pos;
 
 public class Tile {
 
     public static final int TILE_SIZE = 64;
+
+    private Logger logger = Logger.getLogger(Tile.class);
 
     private Piece piece;
     private Pos pos;
@@ -49,12 +52,16 @@ public class Tile {
     }
 
     public void addPiece(Piece piece) {
-        this.piece = piece;
-        this.piece.setPos(this.pos);
+            this.piece = piece;
+            this.piece.setPos(this.pos);
+    }
+
+    public void removePiece() {
+        this.piece = null;
     }
 
     public Piece getPiece() {
-        return piece;
+        return this.piece;
     }
 
     public boolean isEmpty() {
