@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import hukutoss.chess.ChessGame;
 import hukutoss.chess.piece.Piece;
+import hukutoss.chess.util.Lib;
 import hukutoss.chess.util.Logger;
 
 public class GameLogic {
@@ -44,8 +45,8 @@ public class GameLogic {
             ChessGame.getCamera().unproject(mouse);
 
 //            this.click(mouse.x, mouse.y);
-            for (int x = 0; x < ChessBoard.BOARD_SIZE; x++) {
-                for (int y = 0; y < ChessBoard.BOARD_SIZE; y++) {
+            for (int x = 0; x < Lib.BOARD_SIZE; x++) {
+                for (int y = 0; y < Lib.BOARD_SIZE; y++) {
                     if (board.getGrid()[x][y].mouseContains(mouse.x, mouse.y)) {
                         Tile tile = board.getGrid()[x][y];
 

@@ -11,18 +11,16 @@ import hukutoss.chess.util.Side;
 
 public class ChessBoard {
 
-    public static final int BOARD_SIZE = 8;
-
     private Logger logger = Logger.getLogger(ChessBoard.class);
 
     private Tile[][] grid;
 
     public ChessBoard() {
-        grid = new Tile[BOARD_SIZE][BOARD_SIZE];
+        grid = new Tile[Lib.BOARD_SIZE][Lib.BOARD_SIZE];
 
         //x - letter, y - number
-        for (int x = 0; x < BOARD_SIZE; x++)
-            for (int y = 0; y < BOARD_SIZE; y++) {
+        for (int x = 0; x < Lib.BOARD_SIZE; x++)
+            for (int y = 0; y < Lib.BOARD_SIZE; y++) {
                 Sprite tileSprite = (x % 2 == 0 && y % 2 == 0 || x % 2 != 0 && y % 2 != 0) ?
                         Textures.white_cell : Textures.black_cell;
                 grid[x][y] = new Tile(x, y, tileSprite);
@@ -101,8 +99,8 @@ public class ChessBoard {
 
     public void render(SpriteBatch sb, ShapeRenderer sr) {
         sb.setColor(Color.WHITE);
-        for (int x = 0; x < BOARD_SIZE; x++) {
-            for (int y = 0; y < BOARD_SIZE; y++) {
+        for (int x = 0; x < Lib.BOARD_SIZE; x++) {
+            for (int y = 0; y < Lib.BOARD_SIZE; y++) {
                 grid[x][y].render(sb);
                 if (grid[x][y].getPiece() != null) {
                     grid[x][y].getPiece().render(sb);

@@ -12,6 +12,8 @@ public class Lib {
     public static final int TILE_SIZE = 64;
     public static final int PIECE_SIZE = 48;
 
+    public static final int BOARD_SIZE = 8;
+
     public static final Map<Character, Class<?>> pieceMap = new HashMap<>();
     static {
         pieceMap.put('P', Pawn.class);
