@@ -5,12 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.piece.Piece;
+import hukutoss.chess.util.Lib;
 import hukutoss.chess.util.Logger;
 import hukutoss.chess.util.Pos;
 
 public class Tile {
-
-    public static final int TILE_SIZE = 64;
 
     private Logger logger = Logger.getLogger(Tile.class);
 
@@ -30,7 +29,7 @@ public class Tile {
         if (selected) {
             sb.setColor(Color.LIME);
         }
-        sb.draw(this.sprite, pos.getX() * TILE_SIZE, pos.getY() * TILE_SIZE, this.sprite.getWidth(), this.sprite.getHeight());
+        sb.draw(this.sprite, pos.getX() * Lib.TILE_SIZE, pos.getY() * Lib.TILE_SIZE, this.sprite.getWidth(), this.sprite.getHeight());
     }
 
 //    public void renderMoves(SpriteBatch sb, ShapeRenderer sr) {
@@ -45,8 +44,8 @@ public class Tile {
 //    }
 
     public boolean mouseContains(float mouseX, float mouseY) {
-        float x = this.pos.getX() * TILE_SIZE;
-        float y = this.pos.getY() * TILE_SIZE;
+        float x = this.pos.getX() * Lib.TILE_SIZE;
+        float y = this.pos.getY() * Lib.TILE_SIZE;
         return mouseX > x && mouseX < x + 1 + this.sprite.getWidth() &&
                 mouseY > y && mouseY < y + 1 + this.sprite.getHeight(); // why +1 tho?
     }

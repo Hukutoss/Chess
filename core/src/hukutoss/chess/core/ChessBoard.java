@@ -1,16 +1,13 @@
 package hukutoss.chess.core;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import hukutoss.chess.piece.*;
 import hukutoss.chess.util.Logger;
+import hukutoss.chess.util.Lib;
 import hukutoss.chess.util.Side;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChessBoard {
 
@@ -64,12 +61,9 @@ public class ChessBoard {
     //    This is used to determine if a draw can be claimed under the "fifty-move rule".
     // 6. Fullmove number. The number of the full move. It start at 1, and is incremented after Black's move.
 
-    private static final String DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    private static final String SECOND_FEN = "r1bqkb1r/pppp1ppp/2n2n2/4p3/2P5/2N2N2/PP1PPPPP/R1BQKB1R w KQkq - 0 1";
-
     private void initGame() {
 
-        String fen = DEFAULT_FEN.trim();
+        String fen = Lib.START_FEN.trim();
         String[] fenParts = fen.split(" ");
         if (fenParts.length != 6) {
             logger.info("FEN is invalid %s must have 6 sections", fen);
@@ -81,14 +75,6 @@ public class ChessBoard {
             logger.info("FEN has an invalid board %s", fenParts[0]);
             return;
         }
-
-        Map<Character, Class<?>> pieces = new HashMap<>();
-        pieces.put('P', Pawn.class);
-        pieces.put('N', Knight.class);
-        pieces.put('B', Bishop.class);
-        pieces.put('R', Rook.class);
-        pieces.put('Q', Queen.class);
-        pieces.put('K', King.class);
 
         for (int y = 0; y < rank.length; y++) {
             int x = 0;
@@ -102,11 +88,10 @@ public class ChessBoard {
                 try {
                     Side side = Character.isLowerCase(t) ? Side.WHITE : Side.BLACK;
                     t = Character.toUpperCase(t);
-                    Piece p = (Piece) pieces.get(t).getConstructor(Side.class).newInstance(side);
+                    Piece p = (Piece) Lib.pieceMap.get(t).getConstructor(Side.class).newInstance(side);
                     getGrid()[x][y].addPiece(p);
-//                  System.out.format(">>> %s %s piece added at [%s][%s]\n", side.name(), t, x, y);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("Something goes wrong here... ");
                 }
                 x++;
             }

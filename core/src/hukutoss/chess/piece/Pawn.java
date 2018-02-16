@@ -1,7 +1,6 @@
 package hukutoss.chess.piece;
 
 import hukutoss.chess.core.Textures;
-import hukutoss.chess.util.Pos;
 import hukutoss.chess.util.Side;
 
 public class Pawn extends Piece {

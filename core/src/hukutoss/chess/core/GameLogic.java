@@ -23,9 +23,7 @@ public class GameLogic {
 
     public void render(SpriteBatch sb, ShapeRenderer sr) {
         debug();
-
         inputHandler(); //TODO: Change to update
-
         board.render(sb, sr);
     }
 
@@ -33,7 +31,6 @@ public class GameLogic {
         if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             board = new ChessBoard();
             logger.info("New Game");
-
         }
     }
 

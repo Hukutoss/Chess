@@ -3,7 +3,7 @@ package hukutoss.chess.piece;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import hukutoss.chess.core.Tile;
+import hukutoss.chess.util.Lib;
 import hukutoss.chess.util.Pos;
 import hukutoss.chess.util.Side;
 
@@ -32,7 +32,7 @@ public abstract class Piece {
             float yOffset = sprite.getHeight() / 6;
 
             sb.setColor(Color.WHITE);
-            sb.draw(sprite, pos.getX() * Tile.TILE_SIZE + xOffset, pos.getY() * Tile.TILE_SIZE + yOffset);
+            sb.draw(sprite, pos.getX() * Lib.TILE_SIZE + xOffset, pos.getY() * Lib.TILE_SIZE + yOffset);
         }
     }
 }

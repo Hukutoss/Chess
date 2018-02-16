@@ -1,7 +1,5 @@
 package hukutoss.chess.util;
 
-import hukutoss.chess.core.Tile;
-
 public class Pos {
 
     private float x;
