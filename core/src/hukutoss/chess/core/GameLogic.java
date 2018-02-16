@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
 import hukutoss.chess.ChessGame;
 import hukutoss.chess.piece.Piece;
 import hukutoss.chess.util.Lib;
@@ -15,10 +15,10 @@ public class GameLogic {
     private Logger logger = Logger.getLogger(GameLogic.class);
 
     private ChessBoard board;
-    private Vector3 mouse;
+    private Vector2 mouse;
 
     public GameLogic() {
-        mouse = new Vector3();
+        mouse = new Vector2();
         board = new ChessBoard();
     }
 
