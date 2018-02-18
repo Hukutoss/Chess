@@ -59,21 +59,20 @@ public class ChessBoard {
     //    This is used to determine if a draw can be claimed under the "fifty-move rule".
     // 6. Fullmove number. The number of the full move. It start at 1, and is incremented after Black's move.
 
-    private void initGame() {
+    private String userFen; //Input from user
 
-        String fen = Lib.START_FEN.trim();
-        String[] fenParts = fen.split(" ");
-        if (fenParts.length != 6) {
-            logger.info("FEN is invalid %s must have 6 sections", fen);
+    private void initGame() {
+        String fen = userFen == null ? Lib.DEFAULT_FEN : userFen;
+
+        fen = fen.trim();
+        if (!validateFen(fen)) {
             return;
         }
+
+        String[] fenParts = fen.split(" ");
+
         //Board setup
         String[] rank = fenParts[0].split("/");
-        if (rank.length != 8) {
-            logger.info("FEN has an invalid board %s", fenParts[0]);
-            return;
-        }
-
         for (int y = 0; y < rank.length; y++) {
             int x = 0;
             for (int r = 0; r < rank[y].length(); r++) {
@@ -95,6 +94,59 @@ public class ChessBoard {
             }
         }
         //TODO: Add color, castling, en passant and clocks
+    }
+
+    private boolean validateFen(String fen) {
+
+        //6 space-separated fields
+        String[] fenParts = fen.split(" ");
+        if (fenParts.length != 6) {
+            logger.info("FEN must contain six space-delimited fields: %s", fen);
+            // return false;
+        }
+
+        //2nd field is "w" or "b"
+        if (!fenParts[1].matches("^([wb])$")) {
+            logger.info("FEN: 2nd field is invalid: %s", fenParts[1]);
+            //return false;
+        }
+
+        //3rd field is a valid castle string
+        if (!fenParts[2].matches("^(KQ?k?q?|Qk?q?|kq?|q|-)$")) {
+            logger.info("FEN: 3rd field is invalid: %s", fenParts[2]);
+            // return false;
+        }
+
+        //4th field is a valied e.p. string
+        if(!fenParts[3].matches("^(-|[abcdefgh][36])$")) {
+            logger.info("FEN: 4th field is invalid: %s", fenParts[3]);
+            // return false;
+        }
+
+        //half move counter is an integer >= 0
+        if(Integer.parseInt(fenParts[4]) < 0) {
+            logger.info("FEN: 5th field must be a non-negative integer.: %s", fenParts[4]);
+            // return false;
+        }
+
+        //move number field is a integer > 0
+        if(Integer.parseInt(fenParts[5]) <= 0) {
+            logger.info("FEN: 6th field must be a positive integer: %s", fenParts[5]);
+            // return false;
+        }
+
+        //1st field contains 8 rows?
+        String[] rows = fenParts[0].split("/");
+        if (rows.length != 8) {
+            logger.info("'FEN: 1st field \"%s\" doesn't contain 8 '/'-delimited rows.", fenParts[0]);
+            // return false;
+        }
+
+        //TODO: is 1-nd row valid?
+        //TODO: is e.p is valid
+
+        //everything is ok
+        return true;
     }
 
     public void render(SpriteBatch sb, ShapeRenderer sr) {
