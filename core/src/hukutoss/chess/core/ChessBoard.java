@@ -102,44 +102,44 @@ public class ChessBoard {
         String[] fenParts = fen.split(" ");
         if (fenParts.length != 6) {
             logger.info("FEN must contain six space-delimited fields: %s", fen);
-            // return false;
+            return false;
         }
 
         //2nd field is "w" or "b"
         if (!fenParts[1].matches("^([wb])$")) {
             logger.info("FEN: 2nd field is invalid: %s", fenParts[1]);
-            //return false;
+            return false;
         }
 
         //3rd field is a valid castle string
         if (!fenParts[2].matches("^(KQ?k?q?|Qk?q?|kq?|q|-)$")) {
             logger.info("FEN: 3rd field is invalid: %s", fenParts[2]);
-            // return false;
+            return false;
         }
 
         //4th field is a valied e.p. string
         if(!fenParts[3].matches("^(-|[abcdefgh][36])$")) {
             logger.info("FEN: 4th field is invalid: %s", fenParts[3]);
-            // return false;
+            return false;
         }
 
         //half move counter is an integer >= 0
         if(Integer.parseInt(fenParts[4]) < 0) {
             logger.info("FEN: 5th field must be a non-negative integer.: %s", fenParts[4]);
-            // return false;
+            return false;
         }
 
         //move number field is a integer > 0
         if(Integer.parseInt(fenParts[5]) <= 0) {
             logger.info("FEN: 6th field must be a positive integer: %s", fenParts[5]);
-            // return false;
+            return false;
         }
 
         //1st field contains 8 rows?
         String[] rows = fenParts[0].split("/");
         if (rows.length != 8) {
             logger.info("'FEN: 1st field \"%s\" doesn't contain 8 '/'-delimited rows.", fenParts[0]);
-            // return false;
+            return false;
         }
 
         //TODO: is 1-nd row valid?

@@ -4,10 +4,6 @@ public class Logger {
 
     //TODO: Probably need to do string format version of all methods.
 
-    //TODO: Make it not only for String but for Object
-    //Object x;
-    //String s = String.valueOf(x);
-
     public static final int NONE = 0;
     public static final int ERROR = 1;
     public static final int INFO = 2;
